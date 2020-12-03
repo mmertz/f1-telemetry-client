@@ -37,7 +37,7 @@ class F1TelemetryClient extends EventEmitter {
     this.port = port;
     this.address = address;
     this.bigintEnabled = bigintEnabled;
-    this.client = dgram.createSocket('udp4');
+    this.client = dgram.createSocket({type: 'udp4', reuseAddr: true});
   }
 
   /**
