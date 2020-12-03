@@ -13,6 +13,7 @@ import * as packetTypes from './parsers/packets/types';
 import {Options} from './types';
 
 const DEFAULT_PORT = 20777;
+const DEFAULT_ADDRESS = '127.0.0.1';
 const BIGINT_ENABLED = true;
 
 /**
@@ -20,15 +21,21 @@ const BIGINT_ENABLED = true;
  */
 class F1TelemetryClient extends EventEmitter {
   port: number;
+  address: string;
   bigintEnabled: boolean;
   client?: dgram.Socket;
 
   constructor(opts: Options = {}) {
     super();
 
-    const {port = DEFAULT_PORT, bigintEnabled = BIGINT_ENABLED} = opts;
+    const {
+      port = DEFAULT_PORT,
+      bigintEnabled = BIGINT_ENABLED,
+      address = DEFAULT_ADDRESS
+    } = opts;
 
     this.port = port;
+    this.address = host;
     this.bigintEnabled = bigintEnabled;
     this.client = dgram.createSocket('udp4');
   }
@@ -134,7 +141,7 @@ class F1TelemetryClient extends EventEmitter {
     });
 
     this.client.on('message', (m) => this.parseMessage(m));
-    this.client.bind(this.port);
+    this.client.bind(this.port, this.address);
   }
 
   /**
