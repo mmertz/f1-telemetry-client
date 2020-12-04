@@ -210,6 +210,7 @@ export interface ParticipantData {
   m_nationality: number;
   m_raceNumber: number;
   m_teamId: number;
+  m_yourTelemetry: number;
 }
 
 export interface WeatherForecastSample {
