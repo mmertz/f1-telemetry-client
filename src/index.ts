@@ -24,6 +24,7 @@ class F1TelemetryClient extends EventEmitter {
   address: string;
   bigintEnabled: boolean;
   client?: dgram.Socket;
+  connectedClient?: dgram.RemoteInfo;
 
   constructor(opts: Options = {}) {
     super();
@@ -140,7 +141,10 @@ class F1TelemetryClient extends EventEmitter {
       this.client.setBroadcast(true);
     });
 
-    this.client.on('message', (m) => this.parseMessage(m));
+    this.client.on('message', (m, rinfo) => {
+      this.connectedClient = rinfo;
+      this.parseMessage(m);
+    });
     this.client.bind(this.port, this.address);
   }
 
